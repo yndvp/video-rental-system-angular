@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { Movie } from '../movie';
 import { MovieService } from '../movie.service';
-import { MessageService } from '../message.service';
-// import { MOVIES } from '../mock-movies';
 
 @Component({
   selector: 'app-movies',
@@ -21,5 +19,20 @@ export class MoviesComponent implements OnInit {
 
   getMovies(): void {
     this.movieService.getMovies().subscribe((movies) => (this.movies = movies));
+  }
+
+  add(name: string): void {
+    name = name.trim();
+    if (!name) {
+      return;
+    }
+    this.movieService.addMovie({ name } as Movie).subscribe((movie) => {
+      this.movies.push(movie);
+    });
+  }
+
+  delete(movie: Movie): void {
+    this.movies = this.movies.filter((movie) => movie !== movie);
+    this.movieService.deleteMovie(movie.id).subscribe();
   }
 }
